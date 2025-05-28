@@ -1,8 +1,11 @@
 
+using L2Empacotamento.Application.Interfaces;
+using L2Empacotamento.Application.Interfaces.Repositories;
+using L2Empacotamento.Application.Services;
 using L2Empacotamento.Infrastructure.Persistence;
 using L2Empacotamento.Infrastructure.Repositories;
-using L2Empacotamento.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace L2Empacotamento.API
 {
@@ -23,6 +26,14 @@ namespace L2Empacotamento.API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("connectionL2")));
 
             builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
+            builder.Services.AddScoped<IEmbalagemService, EmbalagemService>();
+
+            builder.Services.AddControllers()
+                .AddJsonOptions(opt =>
+                {
+                    opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                });
+
 
             var app = builder.Build();
 

@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using L2Empacotamento.Application.DTOs;
+﻿using L2Empacotamento.Application.DTOs;
+using L2Empacotamento.Application.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace L2Empacotamento.API.Controllers
 {
@@ -7,10 +8,18 @@ namespace L2Empacotamento.API.Controllers
     [Route("api/[controller]")]
     public class EmbalagemController : ControllerBase
     {
-        [HttpPost]
-        public IActionResult Post([FromBody] EmpacotarPedidoRequest request)
+        private readonly IEmbalagemService _embalagemService;
+        public EmbalagemController(IEmbalagemService embalagemService)
         {
-            return Ok(new { mensagem = "Requisição recebida!", pedidos = request.Pedidos});
+            _embalagemService = embalagemService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] EmpacotarPedidoRequest request)
+        {
+            var response = await _embalagemService.EmpacotarAsync(request);
+
+            return Ok(response);
         }
     }
 }
