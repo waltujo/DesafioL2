@@ -1,0 +1,28 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_l2
+    environment:
+      SA_PASSWORD: "TesteL2@123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+
+  api:
+    build:
+      context: .
+      dockerfile: L2Empacotamento.API/Dockerfile
+    container_name: api_l2
+    ports:
+      - "8080:8080"  # HTTP
+      - "8081:8081"  # HTTPS
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__connectionL2=Server=sqlserver;Database=EmpacotamentoL2;User Id=sa;Password=TesteL2@123;
+
+volumes:
+  sql_data:

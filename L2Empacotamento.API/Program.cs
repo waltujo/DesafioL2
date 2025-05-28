@@ -16,14 +16,21 @@ namespace L2Empacotamento.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
-            builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<EmpacotamentoDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("connectionL2")));
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("connectionL2"),
+                    sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 10,
+                            maxRetryDelay: TimeSpan.FromSeconds(15),
+                            errorNumbersToAdd: null
+                        );
+                    }));
 
             builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
             builder.Services.AddScoped<IEmbalagemService, EmbalagemService>();
