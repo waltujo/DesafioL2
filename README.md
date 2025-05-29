@@ -67,7 +67,26 @@ POST /api/embalagem
     }
   ]
 }
+```
 
+5. **Exemplo de saída**
+
+```bash
+{
+  "pedidos": [
+    {
+      "pedidoId": 1,
+      "caixas": [
+        {
+          "caixaId": "Caixa 2",
+          "produtos": [
+            "Nintendo Wii"
+          ]
+        }
+      ]
+    }
+  ]
+}
 ```
 
 ## 🧪 Funcionalidades da API
