@@ -1,0 +1,26 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: "TesteL2@123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+
+  l2empacotamento.api:
+    image: ${DOCKER_REGISTRY-}empacotamento_api
+    build:
+      context: .
+      dockerfile: L2Empacotamento.API/Dockerfile
+    depends_on:
+     - sqlserver
+    ports:
+      - "8080:8080"
+    entrypoint: >
+        sh -c "
+        echo 'Aguardando SQL Server subir...';
+        sleep 15;
+        dotnet ef database update;
+        dotnet L2Empacotamento.API.dll"
+

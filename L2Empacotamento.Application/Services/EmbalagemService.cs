@@ -28,12 +28,12 @@ namespace L2Empacotamento.Application.Services
                 Pedidos = new List<PedidoEmpacotadoDTO>()
             };
 
-            foreach(var pedido in request.Pedidos)
+            foreach (var pedido in request.Pedidos)
             {
                 var caixasUsadas = new List<CaixaEmpacotadaDTO>();
                 var produtosNaoEmpacotados = new List<ProdutoDTO>(pedido.Produtos);
 
-                foreach(var caixa in _caixasDisponiveis.OrderBy(c => c.Volume))
+                foreach (var caixa in _caixasDisponiveis.OrderBy(c => c.Volume))
                 {
                     var caixaAtual = new CaixaEmpacotadaDTO
                     {
@@ -41,11 +41,11 @@ namespace L2Empacotamento.Application.Services
                         Produtos = new List<string>()
                     };
 
-                    foreach(var produto in produtosNaoEmpacotados.ToList())
+                    foreach (var produto in produtosNaoEmpacotados.ToList())
                     {
-                        if(produto.Dimensoes.Altura <= caixa.Altura &&
-                           produto.Dimensoes.Largura <= caixa.Largura &&
-                           produto.Dimensoes.Comprimento <= caixa.Comprimento)
+                        if (produto.Dimensoes.Altura <= caixa.Altura &&
+                            produto.Dimensoes.Largura <= caixa.Largura &&
+                            produto.Dimensoes.Comprimento <= caixa.Comprimento)
                         {
                             caixaAtual.Produtos.Add(produto.ProdutoId);
                             produtosNaoEmpacotados.Remove(produto);
@@ -80,19 +80,20 @@ namespace L2Empacotamento.Application.Services
                     }).ToList()
                 };
 
-                await _pedidoRepository.AdicionarPedidoAsync(pedidoEntity);
+                var sucesso = await _pedidoRepository.AdicionarPedidoAsync(pedidoEntity);
+                if (!sucesso)
+                    throw new Exception($"Erro ao salvar o pedido {pedido.PedidoId} no banco de dados.");
 
-                response.Pedidos.Add(new PedidoEmpacotadoDTO 
+                response.Pedidos.Add(new PedidoEmpacotadoDTO
                 {
                     PedidoId = pedido.PedidoId,
                     Caixas = caixasUsadas
                 });
             }
 
-            await _pedidoRepository.SalvarAsync();
-
             return response;
         }
+
     }
 
     internal class CaixaDisponivel

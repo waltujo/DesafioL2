@@ -1,4 +1,5 @@
 
+using L2Empacotamento.API.Services;
 using L2Empacotamento.Application.Interfaces;
 using L2Empacotamento.Application.Interfaces.Repositories;
 using L2Empacotamento.Application.Services;
@@ -41,6 +42,13 @@ namespace L2Empacotamento.API
                     opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    policy => policy.AllowAnyOrigin()
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader());
+            });
 
             var app = builder.Build();
 
@@ -50,11 +58,14 @@ namespace L2Empacotamento.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            
+            app.InitializeDatabase();
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseCors("AllowAll");
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

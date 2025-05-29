@@ -5,7 +5,6 @@ namespace L2Empacotamento.Application.Interfaces.Repositories
 {
     public interface IPedidoRepository
     {
-        Task AdicionarPedidoAsync(Pedido pedido);
-        Task SalvarAsync();
+        Task<bool> AdicionarPedidoAsync(Pedido pedido);
     }
 }

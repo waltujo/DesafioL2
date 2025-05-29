@@ -17,6 +17,9 @@ namespace L2Empacotamento.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EmpacotarPedidoRequest request)
         {
+            if(request == null)
+                return BadRequest("Pedido Inválido.");
+
             var response = await _embalagemService.EmpacotarAsync(request);
 
             return Ok(response);

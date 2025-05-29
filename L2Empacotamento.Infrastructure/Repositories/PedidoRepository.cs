@@ -1,8 +1,6 @@
-﻿using L2Empacotamento.Application.DTOs;
-using L2Empacotamento.Application.Interfaces.Repositories;
+﻿using L2Empacotamento.Application.Interfaces.Repositories;
 using L2Empacotamento.Domain.Entities;
 using L2Empacotamento.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 namespace L2Empacotamento.Infrastructure.Repositories
 {
@@ -14,14 +12,19 @@ namespace L2Empacotamento.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AdicionarPedidoAsync(Pedido pedido)
+        public async Task<bool> AdicionarPedidoAsync(Pedido pedido)
         {
-            await _context.Pedidos.AddAsync(pedido);
-        }
-
-        public async Task SalvarAsync()
-        {
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.Pedidos.AddAsync(pedido);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao salvar pedido: {ex.Message}");
+                return false;
+            }
         }
     }
 }
