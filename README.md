@@ -23,7 +23,7 @@ API em .NET 8 que automatiza o empacotamento de pedidos da loja online de jogos 
 
 ```bash
 git clone https://github.com/waltujo/L2Empacotamento.git
-cd L2Empacotamento
+cd DesafioL2
 ```
 
 2. **Execute o Docker Compose**
