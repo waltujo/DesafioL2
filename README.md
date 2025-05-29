@@ -29,6 +29,7 @@ cd DesafioL2
 2. **Execute o Docker Compose**
 
 ```bash
+docker-compose down
 docker-compose up --build
 ```
 
@@ -52,14 +53,14 @@ POST /api/embalagem
 {
   "pedidos": [
     {
-      "pedidoId": "123",
+      "pedido_id": 1,
       "produtos": [
         {
-          "produtoId": "A1",
+          "produto_id": "Nintendo Wii",
           "dimensoes": {
-            "altura": 30,
-            "largura": 20,
-            "comprimento": 10
+            "altura": 36,
+            "largura": 45,
+            "comprimento": 20
           }
         }
       ]
