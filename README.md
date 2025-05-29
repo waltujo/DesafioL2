@@ -1,4 +1,4 @@
-# 📦 L2Empacotamento
+# 📦 L2 Empacotamento
 
 API em .NET 8 que automatiza o empacotamento de pedidos da loja online de jogos do seu Manoel. A aplicação recebe uma lista de produtos com dimensões e retorna quais caixas disponíveis devem ser usadas para empacotar os produtos de forma eficiente.
 
