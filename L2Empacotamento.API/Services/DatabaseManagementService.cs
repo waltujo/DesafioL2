@@ -8,11 +8,6 @@ namespace L2Empacotamento.API.Services;
 
 public static class DatabaseManagementService
 {
-    //using (var serviceScope = app.ApplicationServices.CreateScope())
-    //    {
-    //        var dbContext = serviceScope.ServiceProvider.GetRequiredService<EmpacotamentoDbContext>();
-    //        dbContext.Database.Migrate();
-    //    }
     public static void InitializeDatabase(this IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.CreateScope();

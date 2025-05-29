@@ -23,4 +23,3 @@ services:
         sleep 15;
         dotnet ef database update;
         dotnet L2Empacotamento.API.dll"
-
