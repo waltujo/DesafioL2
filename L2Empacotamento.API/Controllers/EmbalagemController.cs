@@ -1,5 +1,6 @@
 ﻿using L2Empacotamento.Application.DTOs;
 using L2Empacotamento.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace L2Empacotamento.API.Controllers
@@ -14,6 +15,7 @@ namespace L2Empacotamento.API.Controllers
             _embalagemService = embalagemService;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EmpacotarPedidoRequest request)
         {

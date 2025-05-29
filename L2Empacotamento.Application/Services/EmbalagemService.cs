@@ -23,6 +23,8 @@ namespace L2Empacotamento.Application.Services
 
         public async Task<EmpacotarPedidoResponse> EmpacotarAsync(EmpacotarPedidoRequest request)
         {
+            ValidarRequisicao(request);
+
             var response = new EmpacotarPedidoResponse
             {
                 Pedidos = new List<PedidoEmpacotadoDTO>()
@@ -94,6 +96,33 @@ namespace L2Empacotamento.Application.Services
             return response;
         }
 
+        private void ValidarRequisicao(EmpacotarPedidoRequest request)
+        {
+            if (request?.Pedidos == null || !request.Pedidos.Any())
+                throw new ArgumentException("A lista de pedidos não pode ser nula ou vazia.");
+
+            foreach (var pedido in request.Pedidos)
+            {
+                if (pedido.Produtos == null || !pedido.Produtos.Any())
+                    throw new ArgumentException($"O pedido {pedido.PedidoId} não contém produtos.");
+
+                foreach (var produto in pedido.Produtos)
+                {
+                    if (string.IsNullOrWhiteSpace(produto.ProdutoId))
+                        throw new ArgumentException("ProdutoId não pode ser nulo ou vazio.");
+
+                    if (produto.Dimensoes == null)
+                        throw new ArgumentException($"Produto {produto.ProdutoId} está com dimensões nulas.");
+
+                    if (produto.Dimensoes.Altura <= 0 ||
+                        produto.Dimensoes.Largura <= 0 ||
+                        produto.Dimensoes.Comprimento <= 0)
+                    {
+                        throw new ArgumentException($"Produto {produto.ProdutoId} possui dimensões inválidas (valores devem ser maiores que zero).");
+                    }
+                }
+            }
+        }
     }
 
     internal class CaixaDisponivel
